@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
         const actions = await actionsDB.get();
         res.status(200).json(actions);
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             message: 'Error retrieving the Projects',
             errorMessage: error.toString()
@@ -27,10 +26,9 @@ router.get('/:id', async (req, res) => {
             })
         }
     } catch (error) {
-
-        console.log(error);
         res.status(500).json({
             message: 'Error retrieving the Action',
+            errorMessage: error.toString()
         });
     }
 });
@@ -47,7 +45,6 @@ router.put('/:id', async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             message: 'Error updating the project',
             errorMessage: error.toString()
@@ -67,7 +64,6 @@ router.delete('/:id', async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             message: 'Error deleting the Action',
             errorMessage: error.toString()

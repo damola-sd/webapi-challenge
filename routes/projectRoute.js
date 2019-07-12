@@ -8,10 +8,9 @@ router.get('/', async (req, res) => {
         const projects = await projectDB.get();
         res.status(200).json(projects);
     } catch (error) {
-        // log error to database
-        console.log(error);
         res.status(500).json({
             message: 'Error retrieving the Projects',
+            errorMessage: error.toString()
         });
     }
 });
@@ -27,10 +26,9 @@ router.get('/:id', async (req, res) => {
             })
         }
     } catch (error) {
-        // log error to database
-        console.log(error);
         res.status(500).json({
-            message: 'Error retrieving the Projects',
+            message: 'Error retrieving the Project',
+            errorMessage: error.toString()
         });
     }
 });
@@ -40,10 +38,9 @@ router.post('/', async (req, res) => {
         const project = await projectDB.insert(req.body);
         res.status(200).json(project);
     } catch (error) {
-        // log error to database
-        console.log(error);
         res.status(500).json({
-            message: 'Error retrieving the Projects',
+            message: 'Error posting the Projects',
+            errorMessage: error.toString()
         });
     }
 });
@@ -60,7 +57,6 @@ router.put('/:id', async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             message: 'Error updating the project',
             errorMessage: error.toString()
@@ -79,8 +75,7 @@ router.delete('/:id', async (req, res) => {
                 message: 'The Project you are trying to delete does not exist'
             })
         }
-    } catch (error) {
-        console.log(error);
+    } catch (error) {  
         res.status(500).json({
             message: 'Error deleting the Projects',
             errorMessage: error.toString()
@@ -100,10 +95,9 @@ router.get('/:id/actions', async (req, res) => {
             })
         }
     } catch (error) {
-        // log error to database
-        console.log(error);
         res.status(500).json({
-            message: 'Error adding a new Action',
+            message: 'Error getting that action, check ErrorMessage below',
+            errorMessage: error.toString()
         });
     }
 });
@@ -122,10 +116,10 @@ router.post('/:id/actions', async (req, res) => {
                 message: 'You cannot add actions to a project that does not exist'
             })
         }
-    } catch (error) {
-        console.log(error);
+    } catch (error) { 
         res.status(500).json({
             message: 'Error adding a new Action',
+            errorMessage: error.toString()
         });
     }
 });
