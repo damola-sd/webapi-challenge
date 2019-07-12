@@ -1,5 +1,6 @@
 const express = require('express');
 const projectDB = require('../data/helpers/projectModel');
+const actionsDB = require('../data/helpers/actionModel');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -83,6 +84,48 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({
             message: 'Error deleting the Projects',
             errorMessage: error.toString()
+        });
+    }
+});
+
+router.get('/:id/actions', async (req, res) => {
+    try {
+        const project = await projectDB.get(req.params.id);
+        if (project) {
+            const actions = await projectDB.getProjectActions(project.id)
+            res.status(200).json(actions);
+        }else {
+            res.status(404).json({
+                message: 'You cannot get actions from a project that does not exist'
+            })
+        }
+    } catch (error) {
+        // log error to database
+        console.log(error);
+        res.status(500).json({
+            message: 'Error adding a new Action',
+        });
+    }
+});
+
+
+router.post('/:id/actions', async (req, res) => {
+    const { id } = req.params;
+    const { description, notes } = req.body;
+    try {
+        const project = await projectDB.get(req.params.id);
+        if (project) {
+            const addAction = await actionsDB.insert({project_id: id, description, notes })
+            res.status(200).json(addAction);
+        }else {
+            res.status(404).json({
+                message: 'You cannot add actions to a project that does not exist'
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Error adding a new Action',
         });
     }
 });
